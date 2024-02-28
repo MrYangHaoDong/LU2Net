@@ -34,17 +34,6 @@ class AxialDW(nn.Module):
         x = self.CAB(x + self.dw_h(x)+self.dw_w(x))
         return x
     
-class AxialDW2(nn.Module):
-    def __init__(self, dim, mixer_kernel, dilation = 1):
-        super().__init__()
-        h, w = mixer_kernel
-        self.dw_h = nn.Conv2d(dim, dim, kernel_size=(h, 1), padding='same', groups = dim, dilation = dilation)
-        self.dw_w = nn.Conv2d(dim, dim, kernel_size=(1, w), padding='same', groups = dim, dilation = dilation)
-        #self.CAB_h = CAB(dim, kernel_size=3, reduction = 8,bias = True)
-        #self.CAB_w = CAB(dim, kernel_size=3, reduction = 8,bias = True)
-    def forward(self, x):
-        x = x + self.dw_h(x)+self.dw_w(x)
-        return x
 
 class EncoderBlock(nn.Module):
     """Encoding then downsampling"""
@@ -99,7 +88,7 @@ class BottleNeckBlock(nn.Module):
         x = self.act(self.pw2(self.bn(x)))
         return x
 
-class ULite(nn.Module):
+class LU2Net(nn.Module):
     def __init__(self):
         super().__init__()
 
